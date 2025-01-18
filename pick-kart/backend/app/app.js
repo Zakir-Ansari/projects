@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-//const connectDB = require('./config/db');
-const errorHandler = require('./middlewares/errorHandler');
+const connectDB = require('./config/db');
+const globalErrorHandler = require('./middlewares/globalErrorHandler');
+const AppError = require('./models/AppError');
 
-//connectDB();
+connectDB();
 
 app.use(bodyParser.json());
 
@@ -13,11 +14,15 @@ app.get('/', (req, res) => {
   res.status(200).json({ status: 'Active1' });
 });
 
-// app.use('/api/auth', require('./routes/authRoutes'));
-// app.use('/api/products', require('./routes/productRoutes'));
-// app.use('/api/users', require('./routes/userRoutes'));
-// app.use('/api/orders', require('./routes/orderRoutes'));
+// Routes
+app.use('/api/auth', require('./routes/authRoutes'));
 
-app.use(errorHandler);
+// Catch all undefined routes and throw a 404 error
+app.use((req, res, next) => {
+  next(new AppError('Not Found', 404));
+});
+
+// Use the global error handler
+app.use(globalErrorHandler);
 
 module.exports = app;
