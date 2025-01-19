@@ -10,7 +10,7 @@ const globalErrorHandler = (err, req, res, next) => {
     status: 'error',
     message: err.message,
     errorCode: err.code, // mongodb error codes: https://www.mongodb.com/docs/manual/reference/error-codes/
-    stackTrace: process.env.ENV === 'production' ? null : err.stack,
+    stackTrace: process.env.ENV === 'PROD' ? null : err.stack,
   });
 };
 

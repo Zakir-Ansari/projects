@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/getCart', (req, res) => {
-  res.json({ message: 'User accessible' });
+router.get('/getProducts', (req, res) => {
+  res.json({ message: 'Seller accessible' });
 });
 
 module.exports = router;
