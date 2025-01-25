@@ -1,6 +1,6 @@
 const AppError = require('../models/AppError');
 
-const authorizeRoles = (...allowedRoles) => {
+const authorizedRoles = allowedRoles => {
   return (req, res, next) => {
     if (!allowedRoles.includes(req.user.role)) {
       throw new AppError('Access Denied', 403);
@@ -9,4 +9,4 @@ const authorizeRoles = (...allowedRoles) => {
   };
 };
 
-module.exports = authorizeRoles;
+module.exports = authorizedRoles;

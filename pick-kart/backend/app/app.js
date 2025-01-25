@@ -4,7 +4,7 @@ const app = express();
 const connectDB = require('./config/db');
 const AppError = require('./models/AppError');
 const verifyToken = require('./middlewares/authMiddleware');
-const authorizeRoles = require('./middlewares/roleMiddleware');
+const authorizedRoles = require('./middlewares/roleMiddleware');
 
 connectDB();
 
@@ -17,13 +17,14 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/admin', verifyToken, authorizeRoles('Admin'), require('./routes/adminRoutes'));
-app.use('/api/seller', verifyToken, authorizeRoles('Seller'), require('./routes/sellerRoutes'));
-app.use('/api/user', verifyToken, authorizeRoles('User'), require('./routes/userRoutes'));
+//app.use('/api/admin', verifyToken, authorizedRoles('Admin'), require('./routes/adminRoutes'));
+//app.use('/api/seller', verifyToken, authorizedRoles('Seller'), require('./routes/sellerRoutes'));
+app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/product', require('./routes/productRoutes'));
 
 // Catch all undefined routes and throw a 404 error
 app.use((req, res, next) => {
-  next(new AppError('Not Found', 404));
+  next(new AppError('Url Not Found', 404));
 });
 
 // Use the global error handler
