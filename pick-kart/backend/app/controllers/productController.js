@@ -45,7 +45,7 @@ exports.getProducts = async (req, res, next) => {
       new AppResponse(
         await Product.find()
           .populate('category', 'name description') // Fetch category details
-          .populate('createdBy', 'username email')
+          .populate('createdBy', 'username')
       )
     );
   } catch (error) {

@@ -1,7 +1,12 @@
 class AppResponse {
-  constructor(data) {
+  constructor(data = null, message = null) {
     this.status = 'success';
-    this.data = data;
+    if (message) {
+      this.message = message;
+    }
+    if (data) {
+      this.data = data;
+    }
   }
 }
 

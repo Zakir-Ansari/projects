@@ -2,10 +2,16 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const ProfileSchema = new mongoose.Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  address: { type: String },
-  image: { type: String },
+  firstName: { type: String, default: '' },
+  lastName: { type: String, default: '' },
+  address: { type: String, default: '' },
+  image: { type: String, default: '' },
+  wishList: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+    },
+  ],
 });
 
 const UserSchema = new mongoose.Schema(
@@ -14,7 +20,10 @@ const UserSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ['Admin', 'Seller', 'User'], default: 'User' },
-    profile: ProfileSchema,
+    profile: {
+      type: ProfileSchema,
+      default: () => ({}), // Initialize with an empty object by default
+    },
   },
   {
     timestamps: true,
