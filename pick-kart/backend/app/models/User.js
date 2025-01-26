@@ -12,6 +12,12 @@ const ProfileSchema = new mongoose.Schema({
       ref: 'Product',
     },
   ],
+  cartList: [
+    {
+      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' }, // Product reference
+      count: { type: Number, default: 1 }, // Count field with a default value
+    },
+  ],
 });
 
 const UserSchema = new mongoose.Schema(
@@ -20,6 +26,7 @@ const UserSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ['Admin', 'Seller', 'User'], default: 'User' },
+    isActive: { type: Boolean, default: true },
     profile: {
       type: ProfileSchema,
       default: () => ({}), // Initialize with an empty object by default

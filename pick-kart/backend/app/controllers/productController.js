@@ -39,6 +39,49 @@ exports.createProduct = async (req, res, next) => {
   }
 };
 
+exports.updateProduct = async (req, res, next) => {
+  try {
+    const { productId, name, description, price, stock, category: categoryName } = req.body;
+
+    if (!productId) {
+      throw new AppError('Product ID is required for updating a product.', 400);
+    }
+
+    // Find the product by ID
+    const product = await Product.findById(productId);
+    if (!product) {
+      throw new AppError(`Product not found with ID: ${productId}`, 404);
+    }
+
+    // Check if the request user is the owner of the product
+    if (product.createdBy.toString() !== req.user.id) {
+      throw new AppError('You are not authorized to update this product.', 403);
+    }
+    // Find the category if provided
+    let category;
+    if (categoryName) {
+      category = await Category.findOne({ name: categoryName });
+      if (!category) {
+        throw new AppError(`Invalid Category: ${categoryName}`, 404);
+      }
+    }
+
+    // Update product fields
+    product.name = name || product.name;
+    product.description = description || product.description;
+    product.price = price || product.price;
+    product.stock = stock || product.stock;
+    product.category = category ? category._id : product.category;
+
+    // Save the updated product
+    await product.save();
+
+    res.status(200).json(new AppResponse(product, 'Product updated successfully.'));
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getProducts = async (req, res, next) => {
   try {
     res.status(200).json(
