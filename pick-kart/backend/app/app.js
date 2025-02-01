@@ -21,6 +21,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 //app.use('/api/seller', verifyToken, authorizedRoles('Seller'), require('./routes/sellerRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/product', require('./routes/productRoutes'));
+app.use('/api/order', require('./routes/orderRoutes'));
 
 // Catch all undefined routes and throw a 404 error
 app.use((req, res, next) => {

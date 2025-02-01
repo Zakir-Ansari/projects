@@ -157,7 +157,6 @@ exports.removeFromCartList = async (req, res, next) => {
     const user = await User.findById(req.user.id);
 
     // Remove the product from the cartList
-    console.log('Test', user.profile.cartList);
     user.profile.cartList = user.profile.cartList.filter(item => item.product?.toString() !== productId);
     await user.save();
 
