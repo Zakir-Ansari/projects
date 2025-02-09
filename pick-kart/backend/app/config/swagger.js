@@ -12,9 +12,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'E-Commerce API',
+      title: 'Pick Kart API',
       version: '1.0.0',
-      description: 'API Documentation for the E-Commerce Application',
+      description: 'API Documentation for the E-Commerce Application: Pick Kart.',
     },
     servers: [
       {
