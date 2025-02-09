@@ -2,6 +2,12 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const path = require('path');
 
+const isVercel = process.env.VERCEL === '1';
+
+const serverUrl = isVercel
+  ? 'https://pick-kart-api.vercel.app/api' // Vercel URL
+  : 'http://localhost:7001/api'; // Local development URL
+
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -12,8 +18,8 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:7001/api',
-        description: 'Local Server',
+        url: serverUrl,
+        description: isVercel ? 'Production server (Vercel)' : 'Development server (localhost)',
       },
     ],
     components: {
