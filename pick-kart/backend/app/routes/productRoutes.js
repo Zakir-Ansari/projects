@@ -8,6 +8,7 @@ const ROLES = require('../enums/roles');
 router.post('/createCategory', verifyToken, authorizedRoles([ROLES.ADMIN]), productController.createCategory);
 router.post('/createProduct', verifyToken, authorizedRoles([ROLES.SELLER]), productController.createProduct);
 router.put('/updateProduct', verifyToken, authorizedRoles([ROLES.SELLER]), productController.updateProduct);
-router.get('/getProducts', verifyToken, productController.getProducts);
+router.get('/getProducts', productController.getProducts);
+router.get('/getProduct/:productId', productController.getProduct);
 
 module.exports = router;

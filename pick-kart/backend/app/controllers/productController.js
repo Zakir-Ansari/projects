@@ -16,7 +16,7 @@ exports.createCategory = async (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
-    const { name, description, price, stock, category: categoryName } = req.body;
+    const { name, description, price, stock, images, category: categoryName } = req.body;
     // Find the category by name
     const category = await Category.findOne({ name: categoryName });
     if (!category) {
@@ -29,6 +29,7 @@ exports.createProduct = async (req, res, next) => {
           description,
           price,
           stock,
+          images,
           category: category._id,
           createdBy: req.user.id,
         })
@@ -41,7 +42,7 @@ exports.createProduct = async (req, res, next) => {
 
 exports.updateProduct = async (req, res, next) => {
   try {
-    const { productId, name, description, price, stock, category: categoryName } = req.body;
+    const { productId, name, description, price, stock, images, category: categoryName } = req.body;
 
     if (!productId) {
       throw new AppError('Product ID is required for updating a product.', 400);
@@ -71,6 +72,7 @@ exports.updateProduct = async (req, res, next) => {
     product.description = description || product.description;
     product.price = price || product.price;
     product.stock = stock || product.stock;
+    product.images = images || product.images;
     product.category = category ? category._id : product.category;
 
     // Save the updated product
@@ -84,14 +86,38 @@ exports.updateProduct = async (req, res, next) => {
 
 exports.getProducts = async (req, res, next) => {
   try {
-    res.status(200).json(
-      new AppResponse(
-        await Product.find()
-          .populate('category', 'name description') // Fetch category details
-          .populate('createdBy', 'username')
-      )
-    );
+    const products = await Product.find().populate('category', 'name description').populate({
+      path: 'createdBy',
+      select: 'username profile.firstName profile.lastName', // Include firstName & lastName from profile
+    });
+
+    // Modify the response to include only the first image
+    const modifiedProducts = products.map(product => ({
+      ...product._doc,
+      images: product.images.length > 0 ? [product.images[0]] : [], // Only first image
+    }));
+
+    res.status(200).json(new AppResponse(modifiedProducts));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
+  }
+};
+
+exports.getProduct = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+
+    const product = await Product.findById(productId).populate('category', 'name description').populate({
+      path: 'createdBy',
+      select: 'username profile.firstName profile.lastName', // Include firstName & lastName from profile
+    });
+
+    if (!product) {
+      throw new AppError('Product not found!', 404);
+    }
+
+    res.status(200).json(new AppResponse(product));
+  } catch (error) {
+    next(error);
   }
 };
