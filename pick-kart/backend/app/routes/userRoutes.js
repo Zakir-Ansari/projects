@@ -5,6 +5,31 @@ const authorizedRoles = require('../middlewares/roleMiddleware');
 const userController = require('../controllers/userController');
 const ROLES = require('../enums/roles');
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: User management APIs
+ */
+
+/**
+ * @swagger
+ * /user/getUsers:
+ *   get:
+ *     summary: Get all users (Admin only)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT Token
+ *     responses:
+ *       200:
+ *         description: List of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ */
 router.get('/getUsers', verifyToken, authorizedRoles([ROLES.ADMIN]), userController.getAllUsers);
 router.put('/updateUser', verifyToken, userController.updateProfile);
 router.put('/deactivateUser', verifyToken, authorizedRoles([ROLES.ADMIN]), userController.deactivateUser);

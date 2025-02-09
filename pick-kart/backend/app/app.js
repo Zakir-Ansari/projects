@@ -3,8 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const connectDB = require('./config/db');
 const AppError = require('./models/AppError');
-const verifyToken = require('./middlewares/authMiddleware');
-const authorizedRoles = require('./middlewares/roleMiddleware');
+const swaggerDocs = require('./config/swagger');
 
 connectDB();
 
@@ -15,6 +14,8 @@ app.get('/', (req, res) => {
   res.status(200).json({ status: 'Active' });
 });
 
+// Swagger Documentation
+swaggerDocs(app);
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 //app.use('/api/admin', verifyToken, authorizedRoles('Admin'), require('./routes/adminRoutes'));
