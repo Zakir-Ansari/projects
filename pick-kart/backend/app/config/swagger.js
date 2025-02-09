@@ -5,8 +5,8 @@ const path = require('path');
 const isVercel = process.env.VERCEL === '1';
 
 const serverUrl = isVercel
-  ? 'https://pick-kart-api.vercel.app/api' // Vercel URL
-  : 'http://localhost:7001/api'; // Local development URL
+  ? 'https://pick-kart-api.vercel.app' // Vercel URL
+  : `http://localhost:${process.env.PORT}`; // Local development URL
 
 const options = {
   definition: {
@@ -18,7 +18,7 @@ const options = {
     },
     servers: [
       {
-        url: serverUrl,
+        url: `${serverUrl}/api`,
         description: isVercel ? 'Production server (Vercel)' : 'Development server (localhost)',
       },
     ],
@@ -99,7 +99,7 @@ const swaggerSpec = swaggerJsdoc(options);
 
 const swaggerDocs = app => {
   app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  console.log(`Swagger UI available at http://localhost:7001/swagger-ui`);
+  console.log(`Swagger UI available at ${serverUrl}/swagger-ui`);
 };
 
 module.exports = swaggerDocs;
