@@ -89,7 +89,7 @@ exports.changeOrderStatus = async (req, res, next) => {
     order.status = status;
     await order.save();
 
-    res.status(200).json(new AppResponse(order, 'Order status updated successfully'));
+    res.status(201).json(new AppResponse(order, 'Order status updated successfully'));
   } catch (error) {
     next(error);
   }
