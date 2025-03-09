@@ -179,3 +179,40 @@ exports.getCartList = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getUserProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id; // Extracted from JWT token
+
+    // Fetch user details with profile info
+    const user = await User.findById(userId)
+      .select('-password') // Exclude password
+      .populate('profile.wishList') // Populate wish list
+      .populate({
+        path: 'profile.cartList.product', // Populate products in cart
+        model: 'Product',
+      });
+
+    if (!user) {
+      throw new AppError('User not found', 404);
+    }
+
+    // Construct response
+    const userProfile = {
+      user: {
+        username: user.username,
+        email: user.email,
+        firstName: user.profile.firstName,
+        lastName: user.profile.lastName,
+        address: user.profile.address,
+        image: user.profile.image,
+      },
+      wishList: user.profile.wishList,
+      cartList: user.profile.cartList,
+    };
+
+    res.status(200).json(new AppResponse(userProfile, 'User details fetched successfully.'));
+  } catch (error) {
+    next(error);
+  }
+};

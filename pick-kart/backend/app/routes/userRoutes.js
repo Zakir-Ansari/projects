@@ -142,5 +142,6 @@ router.get('/getWishList', verifyToken, authorizedRoles([ROLES.USER]), userContr
 router.post('/addToCartList', verifyToken, authorizedRoles([ROLES.USER]), userController.addToCartList);
 router.delete('/removeFromCartList', verifyToken, authorizedRoles([ROLES.USER]), userController.removeFromCartList);
 router.get('/getCartList', verifyToken, authorizedRoles([ROLES.USER]), userController.getCartList);
+router.get('/me', verifyToken, userController.getUserProfile);
 
 module.exports = router;
