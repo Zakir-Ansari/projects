@@ -184,14 +184,10 @@ exports.getUserProfile = async (req, res, next) => {
   try {
     const userId = req.user.id; // Extracted from JWT token
 
-    // Fetch user details with profile info
+    // Fetch user details without unnecessary population
     const user = await User.findById(userId)
       .select('-password') // Exclude password
-      .populate('profile.wishList') // Populate wish list
-      .populate({
-        path: 'profile.cartList.product', // Populate products in cart
-        model: 'Product',
-      });
+      .lean(); // Return plain JavaScript object for efficiency
 
     if (!user) {
       throw new AppError('User not found', 404);
@@ -202,13 +198,13 @@ exports.getUserProfile = async (req, res, next) => {
       user: {
         username: user.username,
         email: user.email,
-        firstName: user.profile.firstName,
-        lastName: user.profile.lastName,
-        address: user.profile.address,
-        image: user.profile.image,
+        firstName: user.profile?.firstName || '',
+        lastName: user.profile?.lastName || '',
+        address: user.profile?.address || '',
+        image: user.profile?.image || '',
       },
-      wishList: user.profile.wishList,
-      cartList: user.profile.cartList,
+      wishListCount: user.profile?.wishList?.length || 0,
+      cartListCount: user.profile?.cartList?.length || 0,
     };
 
     res.status(200).json(new AppResponse(userProfile, 'User details fetched successfully.'));

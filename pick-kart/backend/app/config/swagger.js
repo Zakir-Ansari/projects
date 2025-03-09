@@ -60,15 +60,14 @@ const options = {
         Order: {
           type: 'object',
           properties: {
-            _id: { type: 'string', example: '65bfc437e8298c4f9eeb27d9' },
-            product: { type: 'string', example: '65bfc437e8298c4f9eeb27e8' },
-            selectedSize: { type: 'string', example: 'M' },
-            buyer: { type: 'string', example: '65bfc437e8298c4f9eeb27d5' },
-            quantity: { type: 'number', example: 2 },
+            product: { type: 'string' },
+            selectedSize: { type: 'string' },
+            payedAmount: { type: 'number' },
+            buyer: { type: 'string' },
+            quantity: { type: 'integer' },
             status: {
               type: 'string',
-              enum: ['Submitted', 'Accepted', 'Shipped', 'Delivered', 'Cancelled'],
-              example: 'Submitted',
+              enum: ['Submitted', 'Accepted', 'Shipped', 'Out of Delivery', 'Delivered', 'Cancelled'],
             },
           },
         },

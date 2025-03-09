@@ -45,10 +45,10 @@ router.post('/createCategory', verifyToken, authorizedRoles([ROLES.ADMIN]), prod
  * @swagger
  * /product/createProduct:
  *   post:
- *     summary: Create a new product (Seller only)
+ *     summary: Create a new product (Admin only)
  *     tags: [Products]
  *     security:
- *       - bearerAuth: []  # Requires JWT Token
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -58,8 +58,6 @@ router.post('/createCategory', verifyToken, authorizedRoles([ROLES.ADMIN]), prod
  *     responses:
  *       201:
  *         description: Product created successfully
- *       403:
- *         description: Forbidden - Only Sellers can create products
  */
 router.post('/createProduct', verifyToken, authorizedRoles([ROLES.SELLER]), productController.createProduct);
 
@@ -111,11 +109,11 @@ router.put('/updateProduct', verifyToken, authorizedRoles([ROLES.SELLER]), produ
  * @swagger
  * /product/getProducts:
  *   get:
- *     summary: Get all products (Only first image)
+ *     summary: Retrieve all products
  *     tags: [Products]
  *     responses:
  *       200:
- *         description: List of products
+ *         description: List of all products
  *         content:
  *           application/json:
  *             schema:

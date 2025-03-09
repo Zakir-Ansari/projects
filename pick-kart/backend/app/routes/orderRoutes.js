@@ -1,6 +1,5 @@
 const express = require('express');
 const orderController = require('../controllers/orderController');
-const { authenticate } = require('../middlewares/authMiddleware');
 const verifyToken = require('../middlewares/authMiddleware');
 const authorizedRoles = require('../middlewares/roleMiddleware');
 const ROLES = require('../enums/roles');
@@ -20,7 +19,7 @@ const router = express.Router();
  *     summary: Create a new Order (User only)
  *     tags: [Orders]
  *     security:
- *       - bearerAuth: []  # Requires JWT Token
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -39,13 +38,13 @@ router.post('/createOrder', verifyToken, authorizedRoles([ROLES.USER]), orderCon
  * @swagger
  * /order/getOrders:
  *   get:
- *     summary: Get all Orders
+ *     summary: Retrieve all orders (Admin only)
  *     tags: [Orders]
  *     security:
- *       - bearerAuth: []  # Requires JWT Token
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Admins can get All orders. Seller and User can get their owned orders only
+ *         description: List of all orders
  *         content:
  *           application/json:
  *             schema:
@@ -57,12 +56,18 @@ router.get('/getOrders', verifyToken, orderController.getOrders);
 
 /**
  * @swagger
- * /order/changeOrderStatus:
+ * /order/updateOrder/{id}:
  *   put:
- *     summary: Change order status
+ *     summary: Update an order status (Admin only)
  *     tags: [Orders]
  *     security:
- *       - bearerAuth: []  # Requires JWT Token
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -75,18 +80,10 @@ router.get('/getOrders', verifyToken, orderController.getOrders);
  *                 example: "65bfc437e8298c4f9eeb27d9"
  *               status:
  *                 type: string
- *                 example: 'Accepted, Shipped, Out of Delivery, Delivered, Cancelled'
+ *                 enum: ["Submitted", "Accepted", "Shipped", "Out of Delivery", "Delivered", "Cancelled"]
  *     responses:
- *       201:
- *         description: Order status updated successfully
- *       400:
- *         description: Invalid/Unauthorized order status
- *       403:
- *         description:
- *          'Unauthorized: You can only change the status of orders for products you created |
- *          Unauthorized: You can only change the status of your own orders'
- *       404:
- *         description: Not Found - Order not found
+ *       200:
+ *         description: Order updated successfully
  */
 router.put('/changeOrderStatus', verifyToken, orderController.changeOrderStatus);
 

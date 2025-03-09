@@ -137,11 +137,145 @@ router.put('/activateUser', verifyToken, authorizedRoles([ROLES.ADMIN]), userCon
  *         description: Product added to wishlist
  */
 router.post('/addToWishList', verifyToken, authorizedRoles([ROLES.USER]), userController.addToWishList);
+
+/**
+ * @swagger
+ * /user/removeFromWishList:
+ *   delete:
+ *     summary: Remove a product from wishlist [Only Users]
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT Token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               productId:
+ *                 type: string
+ *                 example: "65bfc437e8298c4f9eeb27d9"
+ *     responses:
+ *       200:
+ *         description: Product removed from wishlist
+ *       400:
+ *         description: Product not found in wishlist
+ */
 router.delete('/removeFromWishList', verifyToken, authorizedRoles([ROLES.USER]), userController.removeFromWishList);
+
+/**
+ * @swagger
+ * /user/getWishList:
+ *   get:
+ *     summary: Retrieve the user's wishlist
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT Token
+ *     responses:
+ *       200:
+ *         description: List of products in the user's wishlist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ */
 router.get('/getWishList', verifyToken, authorizedRoles([ROLES.USER]), userController.getWishList);
+
+/**
+ * @swagger
+ * /user/addToCartList:
+ *   post:
+ *     summary: Add a product to cart [Only Users]
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT Token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               productId:
+ *                 type: string
+ *                 example: "65bfc437e8298c4f9eeb27d9"
+ *               quantity:
+ *                 type: number
+ *                 example: 2
+ *     responses:
+ *       200:
+ *         description: Product added to cart
+ *       400:
+ *         description: Invalid product ID or insufficient stock
+ */
 router.post('/addToCartList', verifyToken, authorizedRoles([ROLES.USER]), userController.addToCartList);
+
+/**
+ * @swagger
+ * /user/removeFromCartList:
+ *   delete:
+ *     summary: Remove a product from cart [Only Users]
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT Token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               productId:
+ *                 type: string
+ *                 example: "65bfc437e8298c4f9eeb27d9"
+ *     responses:
+ *       200:
+ *         description: Product removed from cart
+ *       400:
+ *         description: Product not found in cart
+ */
 router.delete('/removeFromCartList', verifyToken, authorizedRoles([ROLES.USER]), userController.removeFromCartList);
+
+/**
+ * @swagger
+ * /user/getCartList:
+ *   get:
+ *     summary: Retrieve the user's cart items
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT Token
+ *     responses:
+ *       200:
+ *         description: List of products in the user's cart
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ */
 router.get('/getCartList', verifyToken, authorizedRoles([ROLES.USER]), userController.getCartList);
+
+/**
+ * @swagger
+ * /user/me:
+ *   get:
+ *     summary: Get logged-in user's profile
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT Token
+ *     responses:
+ *       200:
+ *         description: User profile details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ */
+
 router.get('/me', verifyToken, userController.getUserProfile);
 
 module.exports = router;
