@@ -70,7 +70,7 @@ router.get('/getOrders', verifyToken, orderController.getOrders);
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               orderId:
  *                 type: string
  *                 example: "65bfc437e8298c4f9eeb27d9"
  *               status:

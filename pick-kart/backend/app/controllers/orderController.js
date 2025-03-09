@@ -11,6 +11,17 @@ exports.createOrder = async (req, res, next) => {
     if (!Array.isArray(orders) || orders.length === 0) {
       throw new AppError('Invalid orders data', 400);
     }
+    // check for valid request data
+    orders.forEach(order => {
+      if (!order.product || !order.quantity) {
+        throw new AppError('Each order must have a product and quantity', 400);
+      }
+    });
+    // check for available stock
+    const product = await Product.findById(order.product);
+    if (!product || product.stock < order.quantity) {
+      throw new AppError(`Insufficient stock for product: ${product.name}`, 400);
+    }
 
     const savedOrders = await Order.insertMany(
       orders.map(order => ({
@@ -64,14 +75,14 @@ exports.getOrders = async (req, res, next) => {
 // Change order status (Admin/Seller)
 exports.changeOrderStatus = async (req, res, next) => {
   try {
-    const { id, status } = req.body;
+    const { orderId, status } = req.body;
     const validStatuses = req.user.allowedOrderStatus;
 
     if (!validStatuses.includes(status)) {
       throw new AppError('Invalid/Unauthorized order status', 400);
     }
 
-    const order = await Order.findById(id).populate('product');
+    const order = await Order.findById(orderId).populate('product');
     if (!order) {
       throw new AppError('Order not found', 404);
     }

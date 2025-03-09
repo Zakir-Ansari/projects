@@ -11,6 +11,9 @@ const verifyToken = (req, res, next) => {
     req.user = jwt.verify(token, process.env.JWT_SECRET);
     next();
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      throw new AppError('Token has expired, please log in again.', 401);
+    }
     throw new AppError('Invalid Token!', 400);
   }
 };

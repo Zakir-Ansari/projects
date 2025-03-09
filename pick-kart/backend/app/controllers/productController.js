@@ -7,6 +7,9 @@ const AppError = require('../models/AppError');
 exports.createCategory = async (req, res, next) => {
   try {
     const { name, description } = req.body;
+    const existingCategory = await Category.findOne({ name });
+    if (existingCategory) throw new AppError(`Category ${name} already exists`, 400);
+
     const category = await Category.create({ name, description });
     res.status(201).json(new AppResponse(category));
   } catch (error) {
@@ -19,9 +22,17 @@ exports.createProduct = async (req, res, next) => {
     const { name, description, price, stock, images, category: categoryName } = req.body;
     // Find the category by name
     const category = await Category.findOne({ name: categoryName });
+    // validations
     if (!category) {
       throw new AppError(`Invalid Category: ${categoryName}`, 404);
     }
+    if (!name || !price || !stock) {
+      throw new AppError('Name, price, and stock are required', 400);
+    }
+    if (!Array.isArray(images) || images.length === 0) {
+      throw new AppError('At least one product image is required', 400);
+    }
+
     res.status(201).json(
       new AppResponse(
         await Product.create({

@@ -13,14 +13,14 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.deactivateUser = async (req, res, next) => {
   try {
-    const { id } = req.body;
-    const user = await User.findById(id);
-    if (!user) throw new AppError(`User with id: ${id} not found`, 404);
-    if (!user.isActive) throw new AppError(`User with id: ${id} is already inactive`, 409);
+    const { userId } = req.body;
+    const user = await User.findById(userId);
+    if (!user) throw new AppError(`User with id: ${userId} not found`, 404);
+    if (!user.isActive) throw new AppError(`User with id: ${userId} is already inactive`, 409);
 
     user.isActive = false;
     await user.save();
-    res.status(200).json(new AppResponse(null, `User: ${user.username} has been deactivated.`));
+    res.status(200).json(new AppResponse(user, `User: ${user.username} has been deactivated.`));
   } catch (error) {
     next(error);
   }
@@ -28,10 +28,10 @@ exports.deactivateUser = async (req, res, next) => {
 
 exports.activateUser = async (req, res, next) => {
   try {
-    const { id } = req.body;
-    const user = await User.findById(id);
-    if (!user) throw new AppError(`User with id: ${id} not found`, 404);
-    if (user.isActive) throw new AppError(`User with id: ${id} is already active`, 409);
+    const { userId } = req.body;
+    const user = await User.findById(userId);
+    if (!user) throw new AppError(`User with id: ${userId} not found`, 404);
+    if (user.isActive) throw new AppError(`User with id: ${userId} is already active`, 409);
 
     user.isActive = true;
     await user.save();
@@ -55,7 +55,7 @@ exports.updateProfile = async (req, res, next) => {
         },
       }
     );
-    res.status(200).json(new AppResponse(response));
+    res.status(201).json(new AppResponse(response));
   } catch (error) {
     next(error);
   }

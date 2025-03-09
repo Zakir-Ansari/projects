@@ -90,6 +90,15 @@ router.post('/createProduct', verifyToken, authorizedRoles([ROLES.SELLER]), prod
  *               description:
  *                 type: string
  *                 example: "Updated product description"
+ *               stock:
+ *                 type: number
+ *                 example: 10
+ *               images:
+ *                 type: array
+ *                 example: ['image1', 'image2']
+ *               category:
+ *                 type: string
+ *                 example: "Electronics"
  *     responses:
  *       200:
  *         description: Product updated successfully
