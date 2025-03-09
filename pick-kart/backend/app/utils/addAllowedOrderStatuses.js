@@ -7,4 +7,4 @@ const addAllowedOrderStatuses = (req, res, next) => {
   next();
 };
 
-module.exports = verifyToken;
+module.exports = addAllowedOrderStatuses;

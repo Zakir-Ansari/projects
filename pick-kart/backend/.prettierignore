@@ -1,5 +1,5 @@
 # add files here to ignore from prettier formatting
-/dist
-/coverage
-.angular
-/.nx/cache
+node_modules
+dist
+package-lock.json
+.env

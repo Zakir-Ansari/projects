@@ -16,12 +16,12 @@ exports.createOrder = async (req, res, next) => {
       if (!order.product || !order.quantity) {
         throw new AppError('Each order must have a product and quantity', 400);
       }
+      // check for available stock
+      const product = Product.findById(order.product);
+      if (!product || product.stock < order.quantity) {
+        throw new AppError(`Insufficient stock for product: ${product.name}`, 400);
+      }
     });
-    // check for available stock
-    const product = await Product.findById(order.product);
-    if (!product || product.stock < order.quantity) {
-      throw new AppError(`Insufficient stock for product: ${product.name}`, 400);
-    }
 
     const savedOrders = await Order.insertMany(
       orders.map(order => ({
