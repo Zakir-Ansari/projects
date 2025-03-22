@@ -139,7 +139,6 @@ npx husky add .husky/pre-commit "cd pick-kart/frontend && npm run lint:fix && np
 ### ✅ Your `.husky/pre-commit` file should look like this:
 ```
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
 cd pick-kart/frontend
 npm run lint:fix
