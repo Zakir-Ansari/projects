@@ -9,5 +9,5 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'pick-kart';
+  title = 'pick-kart-test';
 }

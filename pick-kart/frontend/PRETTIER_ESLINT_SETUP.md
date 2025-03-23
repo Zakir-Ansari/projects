@@ -1,28 +1,22 @@
-## ✅ Prettier & ESLint Setup — `pick-kart` Project
+# Pick-Kart Frontend Setup Guide
 
-This guide explains how to set up and use **Prettier** and **ESLint** in your Angular project for consistent code formatting and linting.
+## ✅ Project Structure
+```
+D:\Coding\VsCode\Git_Repositories\projects\pick-kart\frontend
+```
+
+> Make sure you run all npm commands inside `pick-kart/frontend`.
 
 ---
 
-### 📁 Project Structure (relevant files)
+## ✅ Prettier Setup
+
+### 1. Install Prettier (already present in `devDependencies`)
 ```
-pick-kart/
-├── package.json
-├── .prettierrc
-├── eslint.config.js
-└── src/
-```
-
----
-
-## ⚙️ Prettier Setup
-
-### ➡️ Install Prettier (already present)
-```bash
 npm install --save-dev prettier
 ```
 
-### ➡️ Prettier Configuration (`.prettierrc`)
+### 2. Prettier Config (`.prettierrc`)
 ```json
 {
   "tabWidth": 2,
@@ -38,7 +32,7 @@ npm install --save-dev prettier
 }
 ```
 
-### ➡️ Prettier Scripts in `package.json`
+### 3. Prettier Commands
 ```json
 "scripts": {
   "format": "prettier --check \"src/**/*.{ts,js,html,scss}\"",
@@ -46,26 +40,16 @@ npm install --save-dev prettier
 }
 ```
 
-### ✅ Usage:
-- To check formatting:
-```bash
-npm run format
-```
-- To auto-fix formatting issues:
-```bash
-npm run format:fix
-```
-
 ---
 
-## ⚙️ ESLint Setup
+## ✅ ESLint Setup
 
-### ➡️ Install ESLint and plugins (already present)
-```bash
-npm install --save-dev eslint @eslint/js typescript-eslint angular-eslint eslint-plugin-prettier
+### 1. Install ESLint & Angular ESLint (already present)
+```
+npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin angular-eslint eslint-plugin-prettier
 ```
 
-### ➡️ ESLint Configuration (`eslint.config.js`)
+### 2. ESLint Config (`eslint.config.js`)
 ```js
 // @ts-check
 const eslint = require('@eslint/js');
@@ -103,7 +87,7 @@ module.exports = tseslint.config(
           style: 'kebab-case',
         },
       ],
-      'prettier/prettier': 'error', // ✅ integrate prettier checks into lint
+      'prettier/prettier': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
@@ -115,7 +99,7 @@ module.exports = tseslint.config(
 );
 ```
 
-### ➡️ ESLint Scripts in `package.json`
+### 3. ESLint Commands
 ```json
 "scripts": {
   "lint": "ng lint",
@@ -123,36 +107,70 @@ module.exports = tseslint.config(
 }
 ```
 
-### ✅ Usage:
-- To check for lint issues:
-```bash
-npm run lint
+---
+
+## ✅ Husky Setup (Git Hooks)
+
+### 1. Install Husky
+> Run this from `pick-kart/frontend`:
 ```
-- To automatically fix lint errors:
+npm install husky --save-dev
+```
+
+### 2. Add prepare script in `package.json`
+```json
+"scripts": {
+  "prepare": "husky"
+}
+```
+
+### 3. Initialize Husky
+> Run this from `pick-kart/frontend`:
+```
+npx husky install
+```
+
+### 4. Add Pre-commit Hook
+> Run this from `pick-kart/frontend`:
+```
+npx husky add .husky/pre-commit "cd pick-kart/frontend && npm run lint:fix && npm run format:fix"
+```
+
+### ✅ Your `.husky/pre-commit` file should look like this:
 ```bash
-npm run lint:fix
+#!/bin/sh
+
+set -e  # Stop on first error
+
+CHANGED_FILES=$(git diff --cached --name-only)
+
+if echo "$CHANGED_FILES" | grep -q "pick-kart/frontend"; then
+  echo "⚡ Running frontend lint & format..."
+  cd pick-kart/frontend
+  if npm run format:fix && npm run lint; then
+    echo "✅ Frontend checks passed!"
+  else
+    echo "❌ Frontend lint or format failed. Commit aborted."
+    exit 1
+  fi
+fi
+
+if echo "$CHANGED_FILES" | grep -q "pick-kart/backend"; then
+  echo "⚡ Running backend lint & format..."
+  echo "⚠️  No backend scripts configured yet."
+fi
+
+echo "🎉 All pre-commit checks completed successfully! You're good to go! 🚀"
 ```
 
 ---
 
-## 🎯 Recommended Workflow:
-Before pushing your code:
-```bash
-npm run format:fix && npm run lint:fix && npm test
-```
-✅ This ensures your code is clean, consistent, and error-free.
+## ✅ Final checklist
+- Make sure your `.git` folder is at `D:\Coding\VsCode\Git_Repositories\projects`.
+- Run `npm install` in `pick-kart/frontend`.
+- Husky will auto-install hooks thanks to the `prepare` script.
+- Pre-commit will now run lint fixes and format fixes automatically.
 
 ---
 
-## 🚀 VSCode Recommended Extensions:
-- **Prettier — Code Formatter**  
-- **ESLint**
-
-### Enable format on save:
-Go to **Settings → Text Editor → Formatting → Format On Save** and enable it.
-
----
-
-> ⭐ *If you'd like, I can also help you set up pre-commit hooks with `husky` and `lint-staged` to enforce these checks automatically!*
-
-Let me know if you'd like that! 😎
+## 🎉 You're all set! Happy coding! 🎯

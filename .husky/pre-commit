@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e  # Stop on first error
+
+CHANGED_FILES=$(git diff --cached --name-only)
+
+if echo "$CHANGED_FILES" | grep -q "pick-kart/frontend"; then
+  echo "⚡ Running frontend lint & format..."
+  cd pick-kart/frontend
+  if npx lint-staged; then
+    echo "✅ Frontend checks passed!"
+  else
+    echo "❌ Frontend ling-staged failed. Commit aborted."
+    exit 1
+  fi
+fi
+
+if echo "$CHANGED_FILES" | grep -q "pick-kart/backend"; then
+  echo "⚡ Running backend lint & format..."
+  echo "⚠️  No backend scripts configured yet."
+fi
+
+echo "🎉 All pre-commit checks completed successfully! You're good to go! 🚀"

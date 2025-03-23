@@ -9,8 +9,18 @@
     "test": "ng test",
     "format": "prettier --check \"src/**/*.{ts,js,html,scss}\"",
     "format:fix": "prettier --write \"src/**/*.{ts,js,html,scss}\"",
-    "lint": "ng lint",
-    "lint:fix": "ng lint --fix"
+    "lint": "eslint \"src/**/*.{ts,js}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,js}\" --fix",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "npm run format:fix",
+      "npm run lint"
+    ],
+    "*.{html,css,scss}": [
+      "npm run format:fix"
+    ]
   },
   "private": true,
   "dependencies": {
@@ -24,6 +34,7 @@
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
+    "husky": "^9.1.7",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -43,6 +54,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "lint-staged": "^15.5.0",
     "prettier": "^3.5.3",
     "typescript": "~5.7.2",
     "typescript-eslint": "8.26.0"
