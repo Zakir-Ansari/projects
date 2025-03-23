@@ -18,7 +18,8 @@
   "lint-staged": {
     "*.{ts,js}": [
       "npm run format:fix",
-      "npm run lint"
+      "npm run lint",
+      "npm run test"
     ],
     "*.{html,css,scss}": [
       "npm run format:fix"
