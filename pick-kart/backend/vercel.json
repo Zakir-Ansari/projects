@@ -14,5 +14,8 @@
       "src": "/(.*)",
       "dest": "/app/app.js"
     }
-  ]
+  ],
+  "build": {
+    "ignoreCommand": "git diff --quiet HEAD^ HEAD -- pick-kart/backend || exit 1"
+  }
 }
