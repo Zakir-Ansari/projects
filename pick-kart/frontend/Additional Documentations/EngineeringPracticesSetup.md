@@ -231,7 +231,6 @@ echo "🎉 All pre-commit checks completed successfully! You're good to go! 🚀
 ```
 
 ---
-
 ## ✅ Final checklist
 - Make sure your `.git` folder is at `D:\Coding\VsCode\Git_Repositories\projects`.
 - Run `npm install` in `pick-kart/frontend`.
