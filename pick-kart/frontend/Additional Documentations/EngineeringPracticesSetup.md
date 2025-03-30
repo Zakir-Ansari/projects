@@ -1,4 +1,4 @@
-# Pick-Kart Frontend Setup Guide
+# Pick-Kart Frontend Engineering Practices Setup Guide
 
 ## ✅ Prettier Setup
 
