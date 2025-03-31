@@ -2,3 +2,21 @@
 
 /* Importing Bootstrap SCSS file. */
 @use 'bootstrap/scss/bootstrap';
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure it stretches to the full height */
+}
+
+/* Footer sits at the bottom */
+.footer {
+  margin-top: auto; /* Push the footer to the bottom */
+}
+
+@media (max-width: 991px) {
+  .container {
+    width: 100% !important;
+    max-width: 100% !important; /* Override Bootstrap's default */
+  }
+}

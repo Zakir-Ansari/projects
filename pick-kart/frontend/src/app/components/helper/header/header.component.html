@@ -1,0 +1,45 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary shadow">
+  <div class="container">
+    <!-- Hamburger Button for Mobile -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="open(offcanvasContent)"
+      aria-controls="offcanvasNavbar"
+      aria-label="Toggle navigation">
+      <i class="bx bx-menu menu-icon"></i>
+    </button>
+
+    <!-- Logo (Centered on Mobile) -->
+    <a class="navbar-brand fs-4 fw-semibold" href="#">Logo</a>
+
+    <!-- Common Navigation List for Desktop -->
+    <div class="collapse navbar-collapse d-none d-lg-block">
+      <ul class="navbar-nav ms-auto">
+        @for (item of menuItems; track item) {
+          <li class="nav-item">
+            <a class="nav-link" [href]="item.link">{{ item.label }}</a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Offcanvas for Mobile -->
+<ng-template #offcanvasContent let-offcanvas>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Menu</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="navbar-nav">
+      @for (item of menuItems; track item) {
+        <li class="nav-item">
+          <a class="nav-link" [href]="item.link" (click)="offcanvas.dismiss()">{{ item.label }}</a>
+        </li>
+      }
+    </ul>
+  </div>
+</ng-template>

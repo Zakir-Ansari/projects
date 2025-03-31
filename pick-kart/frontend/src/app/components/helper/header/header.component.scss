@@ -1,0 +1,20 @@
+/* Default navbar styles */
+.navbar {
+  position: relative;
+}
+
+/* Align logo to center on mobile */
+@media (max-width: 991px) {
+  .navbar .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  /* Position the hamburger menu on the left */
+  .navbar-toggler {
+    position: absolute;
+    left: 16px; /* Adjust as needed */
+  }
+}
