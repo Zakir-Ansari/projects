@@ -13,9 +13,11 @@ import { AuthService } from './services/auth/auth.service';
 export class AppComponent implements OnInit {
   title = 'pick-kart';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    console.log('%c[AppComponent] Constructed', 'color: orange');
+  }
 
   ngOnInit(): void {
-    this.authService.login('Admin', 'Admin').subscribe({ next: response => console.log('Response', response) });
+    console.log('test');
   }
 }

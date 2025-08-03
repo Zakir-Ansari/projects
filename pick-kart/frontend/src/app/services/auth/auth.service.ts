@@ -20,9 +20,12 @@ export class AuthService {
   private userSubject = new BehaviorSubject<TokenPayload | null>(null);
   user$ = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log('%c[AuthService] Constructed', 'color: red');
+  }
 
   login(username: string, password: string): Observable<LoginResponse> {
+    console.log('auth service, login called', username, password);
     return this.http
       .post<LoginResponse>('https://pick-kart-api.vercel.app/api/auth/login', { username, password })
       .pipe(
