@@ -7,13 +7,33 @@ const ROLES = require('../enums/roles');
 
 const register = async (req, res, next) => {
   try {
-    const { username, password, email, role } = req.body;
-    // if register request is for ADMIN, discard the request
-    if (role === ROLES.ADMIN) throw new AppError(`Only Admins can create or update accounts as admins`, 403);
+    const { email, password, role, firstName, lastName } = req.body;
 
-    const newUser = new User({ username, password, email, role });
+    // Reject if role is ADMIN
+    if (role === ROLES.ADMIN) {
+      throw new AppError(`Only Admins can create or update accounts as admins`, 403);
+    }
+
+    // Check for existing user
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      throw new AppError('Email is already registered.', 400);
+    }
+
+    // Create user with embedded profile
+    const newUser = new User({
+      email,
+      password,
+      role,
+      profile: {
+        firstName,
+        lastName,
+      },
+    });
+
     await newUser.save();
-    res.status(201).json({ message: `User registered with username ${username}` });
+
+    res.status(201).json({ message: `User registered with email ${email}` });
   } catch (error) {
     next(error);
   }
@@ -21,11 +41,11 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
     // If user is not found
-    if (!user) throw new AppError(`User ${username} not found!`, 404);
+    if (!user) throw new AppError(`User with ${email} not found!`, 404);
 
     // Validate password
     const isMatch = await bcrypt.compare(password, user.password);

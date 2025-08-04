@@ -41,6 +41,25 @@ exports.activateUser = async (req, res, next) => {
   }
 };
 
+exports.deleteUserById = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+
+    // Check if user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new AppError('User not found', 404);
+    }
+
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json(new AppResponse(null, `User with ID ${userId} deleted successfully.`));
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.updateProfile = async (req, res, next) => {
   try {
     const userId = req.user.id;

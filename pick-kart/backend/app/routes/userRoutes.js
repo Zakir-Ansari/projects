@@ -70,7 +70,7 @@ router.put('/updateProfile', verifyToken, userController.updateProfile);
  * @swagger
  * /user/deactivateUser:
  *   put:
- *     summary: Deactivate a User [Only Admins]
+ *     summary: Deactivate a User (Admin only)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []  # Requires JWT Token
@@ -94,7 +94,7 @@ router.put('/deactivateUser', verifyToken, authorizedRoles([ROLES.ADMIN]), userC
  * @swagger
  * /user/activateUser:
  *   put:
- *     summary: Activate a User [Only Admins]
+ *     summary: Activate a User (Admin only)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []  # Requires JWT Token
@@ -116,9 +116,32 @@ router.put('/activateUser', verifyToken, authorizedRoles([ROLES.ADMIN]), userCon
 
 /**
  * @swagger
+ * /user/{id}:
+ *   delete:
+ *     summary: Delete User by ID (Admin only)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT Token
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The User ID
+ *     responses:
+ *       201:
+ *         description: 'User with ID 1234 deleted successfully.'
+ *       404:
+ *         description: User not found
+ */
+router.delete('/:id', verifyToken, authorizedRoles([ROLES.ADMIN]), userController.deleteUserById);
+
+/**
+ * @swagger
  * /user/addToWishList:
  *   post:
- *     summary: Add a product to wishlist [Only Users]
+ *     summary: Add a product to wishlist (User only)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []  # Requires JWT Token
@@ -142,7 +165,7 @@ router.post('/addToWishList', verifyToken, authorizedRoles([ROLES.USER]), userCo
  * @swagger
  * /user/removeFromWishList:
  *   delete:
- *     summary: Remove a product from wishlist [Only Users]
+ *     summary: Remove a product from wishlist (User only)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []  # Requires JWT Token
@@ -168,7 +191,7 @@ router.delete('/removeFromWishList', verifyToken, authorizedRoles([ROLES.USER]),
  * @swagger
  * /user/getWishList:
  *   get:
- *     summary: Retrieve the user's wishlist
+ *     summary: Retrieve the user's wishlist (User only)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []  # Requires JWT Token
@@ -188,7 +211,7 @@ router.get('/getWishList', verifyToken, authorizedRoles([ROLES.USER]), userContr
  * @swagger
  * /user/addToCartList:
  *   post:
- *     summary: Add a product to cart [Only Users]
+ *     summary: Add a product to cart (User only)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []  # Requires JWT Token
@@ -217,7 +240,7 @@ router.post('/addToCartList', verifyToken, authorizedRoles([ROLES.USER]), userCo
  * @swagger
  * /user/removeFromCartList:
  *   delete:
- *     summary: Remove a product from cart [Only Users]
+ *     summary: Remove a product from cart (User only)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []  # Requires JWT Token
@@ -243,7 +266,7 @@ router.delete('/removeFromCartList', verifyToken, authorizedRoles([ROLES.USER]),
  * @swagger
  * /user/getCartList:
  *   get:
- *     summary: Retrieve the user's cart items
+ *     summary: Retrieve the user's cart items (User only)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []  # Requires JWT Token

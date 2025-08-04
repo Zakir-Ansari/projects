@@ -45,7 +45,7 @@ router.post('/createCategory', verifyToken, authorizedRoles([ROLES.ADMIN]), prod
  * @swagger
  * /product/createProduct:
  *   post:
- *     summary: Create a new product (Admin only)
+ *     summary: Create a new product (Seller only)
  *     tags: [Products]
  *     security:
  *       - bearerAuth: []

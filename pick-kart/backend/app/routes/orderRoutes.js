@@ -38,7 +38,7 @@ router.post('/createOrder', verifyToken, authorizedRoles([ROLES.USER]), orderCon
  * @swagger
  * /order/getOrders:
  *   get:
- *     summary: Retrieve all orders (Admin only)
+ *     summary: Retrieve all orders
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
@@ -58,7 +58,7 @@ router.get('/getOrders', verifyToken, orderController.getOrders);
  * @swagger
  * /order/updateOrder/{id}:
  *   put:
- *     summary: Update an order status (Admin only)
+ *     summary: Update an order status
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
