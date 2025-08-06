@@ -3,9 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-unauthorized',
   imports: [],
-  templateUrl: './unauthorized.component.html',
-  styleUrl: './unauthorized.component.scss'
+  template: ` <h2>Unauthorized</h2> `,
+  styles: [],
 })
-export class UnauthorizedComponent {
-
-}
+export class UnauthorizedComponent {}

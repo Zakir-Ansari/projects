@@ -4,8 +4,17 @@ import { ProductManagementComponent } from './components/product-management/prod
 import { roleGuard } from './core/guard/role/role.guard';
 import { HomeComponent } from './components/home/home.component';
 import { UnauthorizedComponent } from './components/helper/unauthorized/unauthorized.component';
+import { LoginSignupComponent } from './components/login-signup/login-signup.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'login',
+    component: LoginSignupComponent,
+  },
   {
     path: 'userManagement',
     component: UserManagementComponent,
@@ -17,16 +26,7 @@ export const routes: Routes = [
     canActivate: [roleGuard(['Admin', 'Seller'])],
   },
   {
-    path: 'home',
-    component: HomeComponent,
-  },
-  {
     path: 'unauthorized',
     component: UnauthorizedComponent,
-  },
-  {
-    path: '',
-    redirectTo: '/home',
-    pathMatch: 'full',
   },
 ];

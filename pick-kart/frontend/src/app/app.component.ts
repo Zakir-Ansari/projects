@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/helper/header/header.component';
 import { FooterComponent } from './components/helper/footer/footer.component';
@@ -12,12 +12,14 @@ import { AuthService } from './services/auth/auth.service';
 })
 export class AppComponent implements OnInit {
   title = 'pick-kart';
+  authService = inject(AuthService);
 
-  constructor(private authService: AuthService) {
+  constructor() {
     console.log('%c[AppComponent] Constructed', 'color: orange');
   }
 
   ngOnInit(): void {
     console.log('test');
+    this.authService.autoLogin();
   }
 }

@@ -11,20 +11,12 @@
       <i class="bx bx-menu menu-icon"></i>
     </button>
 
-    <!-- Logo (Centered on Mobile) -->
+    <!-- Logo -->
     <a class="navbar-brand fs-4 fw-semibold" href="#">Logo</a>
 
-    <!-- Common Navigation List for Desktop -->
+    <!-- Desktop Menu -->
     <div class="collapse navbar-collapse d-none d-lg-block">
-      <ul class="navbar-nav ms-auto">
-        @for (item of menuItems; track item) {
-          <li class="nav-item">
-            @if (!item.allowedRole || item.allowedRole.includes(role ?? '')) {
-              <a class="nav-link" [routerLink]="item.link">{{ item.label }}</a>
-            }
-          </li>
-        }
-      </ul>
+      <ng-container *ngTemplateOutlet="navListTemplate"></ng-container>
     </div>
   </div>
 </nav>
@@ -36,14 +28,23 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
   </div>
   <div class="offcanvas-body">
-    <ul class="navbar-nav">
-      @for (item of menuItems; track item) {
-        <li class="nav-item">
-          @if (!item.allowedRole || item.allowedRole.includes(role ?? '')) {
-            <a class="nav-link" [routerLink]="item.link" (click)="offcanvas.dismiss()">{{ item.label }}</a>
-          }
-        </li>
-      }
-    </ul>
+    <!-- Mobile Menu -->
+    <ng-container *ngTemplateOutlet="navListTemplate; context: { dismiss: offcanvas }"></ng-container>
   </div>
+</ng-template>
+
+<!-- ✅ Reusable nav list template -->
+<ng-template #navListTemplate let-dismiss="dismiss">
+  <ul class="navbar-nav ms-auto">
+    @for (item of menuItems; track item) {
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="item.link" (click)="dismiss?.dismiss()">
+          {{ item.label }}
+        </a>
+      </li>
+    }
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="'/login'" (click)="dismiss?.dismiss()"> Login </a>
+    </li>
+  </ul>
 </ng-template>

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Role } from '../../core/enums/role.enum';
 
 interface TokenPayload {
   id: string;
-  role: 'Admin' | 'Seller' | 'User';
+  role: Role;
   exp: number;
 }
 
@@ -24,17 +25,15 @@ export class AuthService {
     console.log('%c[AuthService] Constructed', 'color: red');
   }
 
-  login(username: string, password: string): Observable<LoginResponse> {
-    console.log('auth service, login called', username, password);
-    return this.http
-      .post<LoginResponse>('https://pick-kart-api.vercel.app/api/auth/login', { username, password })
-      .pipe(
-        map(response => {
-          const token = response.data.token;
-          this.storeToken(token);
-          return response;
-        })
-      );
+  login(email: string, password: string): Observable<LoginResponse> {
+    console.log('auth service, login called', email, password);
+    return this.http.post<LoginResponse>('http://localhost:7001/api/auth/login', { email, password }).pipe(
+      map(response => {
+        const token = response.data.token;
+        this.storeToken(token);
+        return response;
+      })
+    );
   }
 
   logout() {
